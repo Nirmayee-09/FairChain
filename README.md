@@ -16,7 +16,3 @@ This project was built for the PromptWars Solution Challenge 2026.
 - `/frontend` - Next.js application (User Interface & Map Visualizations)
 - `/backend` - FastAPI application (Machine Learning & Routing Engine)
 - `/docs` - Project Requirements Document (PRD) and team task sheets.
-
-## Setup Instructions
-
-*(Coming soon...)*
