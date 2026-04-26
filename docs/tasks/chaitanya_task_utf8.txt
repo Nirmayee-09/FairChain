@@ -1,0 +1,88 @@
+﻿FairChain Team Execution Plan: Chaitanya
+Role: Bias/Fairness ML Engineer
+Primary Focus: The Open Innovation Layer: Build the Supplier scoring fairness audit using AIF360/Fairlearn. Detect disparate impact in AI vendor decisions.
+
+1. Ownership & Boundary Definitions
+As a highly specialized team working within a heavily constrained 48-hour competitive window, strict boundary definitions are vital to avoiding merge conflicts and redundant effort. You are fully responsible for the items listed below. Do not stray into the domains of other team members unless explicitly integrating APIs.
+2. Explicit File & Directory Ownership
+models/fairness_auditor.py - Core AIF360 disparate impact and equalized odds analysis classes.
+routes/fairness.py - FastAPI endpoints that serve fairness metrics to the frontend.
+data/supplier_database.csv - Synthesized supplier database with demographics.
+3. Exhaustive Step-by-Step Task Execution Protocol (Detailed 8-Step Plan)
+Task 1: Fairness Infrastructure & Library Integration (Day 1 - AM)
+Setup the Fairness ML environment: install AIF360 (AI Fairness 360) and Microsoft Fairlearn.
+Map out the logical connection between the Logistics dashboard and the Fairness Auditor.
+Define the primary 'Privileged' vs 'Unprivileged' demographics for the Indian SME context.
+Task 2: Synthetic Supplier Dataset Architecture (Day 1 - PM)
+Design a 2,000+ row supplier dataset containing actual operational reliability KPIs vs. assigned AI Trust Scores.
+Inject systematic bias: create a 'Region Penalty' where suppliers in historically flood-prone Tier-3 cities receive lower scores.
+Ensure the bias is statistically significant but 'hidden' to the casual observer.
+Task 3: Disparate Impact & Statistical Parity Calculations (Day 1 - Eve)
+Implement the Disparate Impact Ratio metric (unprivileged success rate / privileged success rate).
+Apply the '80% Rule' as a hard-coded audit failure threshold for the UI.
+Calculate Mean Difference in reliability scores between demographics to highlight the unfair gap.
+Task 4: Qualitative Bias Analysis & Feature Importance (Day 2 - AM)
+Identify which features (e.g., location_id, years_active) are contributing most heavily to the discriminatory AI output.
+Generate a JSON 'Explainer' object that Nirmayee's UI can use to show *why* the audit failed.
+Validate that the bias is systemic and not just random variance.
+Task 5: Adaptive Bias Mitigation Implementation (Day 2 - PM)
+Implement a Pre-processing mitigation algorithm (e.g., Reweighing) to adjust training weights.
+Generate a 'Corrected Score' vector for all unprivileged group members.
+Compare 'Before' and 'After' disparate impact scores to prove the effectiveness of the auditor.
+Task 6: Fairness-Aware API Service Connector (Day 2 - Eve)
+Develop the FastAPI route /api/v1/fairness/audit that returns the full metrics payload.
+Ensure the payload includes: disparate_impact, parity_gap, and top_penalized_vendors.
+Coordinate with Jaideep to ensure the JSON shape matches the Dashboard Modal requirements.
+Task 7: Methodology Documentation for Pitch Deck (Day 3 - AM)
+Provide Garud with high-resolution graphs showing the 'Bias vs. Fair' performance delta.
+Draft a 1-page technical summary explaining AIF360 for the submission repository.
+Prepare a concise 'One-Line Proof' of the tool's innovation: 'Quantifying invisible economic exclusion in supply chains.'
+Task 8: Unit Testing & Fairness Guardrails (Final)
+Write unit tests to ensure the auditor rejects corrupt datasets with missing demographic columns.
+Verify the API remains performant when auditing larger supplier batches (up to 5,000 rows).
+Finalize the model hyperparameters to ensure the audit doesn't yield False Positives.
+Appendix A: Complete API Schema and Data Dictionary
+The following data dictionary applies system-wide. You must adhere to these precise naming conventions, data types, and JSON shapes when producing or consuming data across the FastAPI and Next.js boundary.
+A.1 Route Segment Object Schema
+{
+  "segment_id": "uuid",
+  "nh_identifier": "string (e.g., NH48)",
+  "start_node_latlon": [float, float],
+  "end_node_latlon": [float, float],
+  "base_distance_km": float,
+  "historical_delay_variance": float
+}
+A.2 Predictive Anomaly Score Payload
+{
+  "segment_id": "uuid",
+  "current_timestamp_utc": "iso8601",
+  "isolation_forest_raw_score": float,
+  "normalized_risk_probability": float (0.0 to 1.0),
+  "dominant_anomalous_features": ["rainfall_spike", "velocity_plunge"],
+  "model_confidence_interval": [float, float]
+}
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
+Logistical continuity planning and disaster recovery protocols require extensive asynchronous processing. The event loop must be monitored continuously to prevent blocking operations during heavy I/O tasks associated with fetching large meteorological datasets and joining them with high-velocity telematics data streams. Comprehensive logging is mandated at every abstraction layer.
