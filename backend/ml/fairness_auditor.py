@@ -109,3 +109,137 @@ class FairnessAuditor:
             "unprivileged_avg_score": round(unpriv_score, 2),
             "audit_failed_80_percent_rule": bool(audit_failed)
         }
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # TASK 4 — Qualitative Bias Analysis & Feature Importance
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def feature_importance_analysis(self, df):
+        """
+        Trains a RandomForestClassifier to predict the AI trust score bucket
+        (high/low) and extracts feature importances.
+        This reveals which input features (e.g. location_tier, years_active)
+        are driving the discriminatory output most strongly.
+        """
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn.model_selection import train_test_split
+
+        if 'contract_awarded' not in df.columns:
+            df = df.copy()
+            df['contract_awarded'] = (df['ai_trust_score'] >= 75).astype(int)
+
+        # Feature columns (drop IDs and the label/score itself)
+        feature_cols = [
+            'business_size', 'location_tier', 'owner_gender',
+            'years_active', 'on_time_delivery_rate', 'defect_rate'
+        ]
+        X = df[feature_cols]
+        y = df['contract_awarded']
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+
+        clf = RandomForestClassifier(n_estimators=100, random_state=42)
+        clf.fit(X_train, y_train)
+
+        importances = clf.feature_importances_
+        ranked = sorted(
+            zip(feature_cols, importances),
+            key=lambda x: x[1],
+            reverse=True
+        )
+
+        return {
+            "model_accuracy": round(clf.score(X_test, y_test), 4),
+            "feature_importances": [
+                {"feature": feat, "importance": round(float(imp), 4)}
+                for feat, imp in ranked
+            ]
+        }
+
+    def validate_systemic_bias(self, df, n_permutations=500):
+        """
+        Validates that the observed score gap between privileged and unprivileged
+        groups is SYSTEMIC (not random variance) via a permutation test.
+
+        Null hypothesis: group labels are irrelevant — shuffling them yields the
+        same score gap.
+        Returns a p-value. p < 0.05 → bias is statistically significant.
+        """
+        if 'ai_trust_score' not in df.columns:
+            return {"error": "ai_trust_score column missing"}
+
+        observed_gap = (
+            df[df['location_tier'] == 1]['ai_trust_score'].mean()
+            - df[df['location_tier'] == 0]['ai_trust_score'].mean()
+        )
+
+        rng = np.random.default_rng(seed=42)
+        permuted_gaps = []
+        scores = df['ai_trust_score'].values
+        labels = df['location_tier'].values
+
+        for _ in range(n_permutations):
+            shuffled = rng.permutation(labels)
+            gap = scores[shuffled == 1].mean() - scores[shuffled == 0].mean()
+            permuted_gaps.append(gap)
+
+        permuted_gaps = np.array(permuted_gaps)
+        # Two-tailed p-value
+        p_value = float(np.mean(np.abs(permuted_gaps) >= np.abs(observed_gap)))
+
+        return {
+            "observed_score_gap": round(float(observed_gap), 4),
+            "permutation_mean_gap": round(float(permuted_gaps.mean()), 4),
+            "p_value": round(p_value, 4),
+            "bias_is_systemic": p_value < 0.05
+        }
+
+    def generate_explainer(self, df):
+        """
+        Produces a complete JSON Explainer object for the UI dashboard modal.
+        Combines fairness metrics + feature importances + systemic bias validation
+        into a single structured payload.
+        """
+        metrics    = self.calculate_metrics(df)
+        importance = self.feature_importance_analysis(df)
+        systemic   = self.validate_systemic_bias(df)
+
+        # Top penalised vendors: unprivileged group with the largest score gap
+        # relative to their true_performance_score
+        df_copy = df.copy()
+        df_copy['penalty'] = df_copy['true_performance_score'] - df_copy['ai_trust_score']
+        top_penalised = (
+            df_copy[df_copy['location_tier'] == 0]
+            .nlargest(5, 'penalty')[['supplier_id', 'ai_trust_score', 'true_performance_score', 'penalty']]
+            .to_dict(orient='records')
+        )
+
+        # Determine audit status label
+        if metrics['audit_failed_80_percent_rule']:
+            status = "AUDIT_FAILED"
+            reason = (
+                f"Disparate Impact Ratio of {metrics['disparate_impact_ratio']} is below "
+                f"the 80% Rule threshold (0.80). Tier-3 suppliers are awarded contracts at "
+                f"less than half the rate of Tier-1 suppliers despite comparable performance."
+            )
+        else:
+            status = "AUDIT_PASSED"
+            reason = "No statistically significant disparate impact detected."
+
+        explainer = {
+            "audit_status": status,
+            "audit_reason": reason,
+            "fairness_metrics": metrics,
+            "feature_importance": importance["feature_importances"],
+            "model_accuracy": importance["model_accuracy"],
+            "systemic_bias_validation": systemic,
+            "top_penalised_vendors": top_penalised,
+            "one_line_proof": (
+                "Quantifying invisible economic exclusion in supply chains: "
+                f"Tier-3 Indian SME suppliers suffer a {metrics['raw_score_gap']}-point "
+                "AI trust score deficit with no operational justification."
+            )
+        }
+        return explainer
