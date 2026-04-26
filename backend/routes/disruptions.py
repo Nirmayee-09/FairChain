@@ -19,7 +19,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import StreamingResponse
@@ -44,9 +44,12 @@ router = APIRouter(prefix="/disruptions", tags=["disruptions"])
 class SegmentRequest(BaseModel):
     """Route segment object — matches the agreed input schema exactly."""
     segment_id: str = Field(..., description="UUID of the route segment")
-    nh_identifier: str = Field(..., example="NH48")
-    start_node_latlon: list[float] = Field(..., min_length=2, max_length=2)
-    end_node_latlon: list[float] = Field(..., min_length=2, max_length=2)
+    nh_identifier: str = Field(
+        ...,
+        json_schema_extra={"example": "NH48"},  # Pydantic v2: example via json_schema_extra
+    )
+    start_node_latlon: Annotated[list[float], Field(min_length=2, max_length=2)]
+    end_node_latlon: Annotated[list[float], Field(min_length=2, max_length=2)]
     base_distance_km: float = Field(..., gt=0)
     historical_delay_variance: float = Field(..., ge=0)
 
@@ -87,7 +90,7 @@ class PredictRequest(BaseModel):
 
 class BatchPredictRequest(BaseModel):
     """Batch prediction request."""
-    items: list[PredictRequest] = Field(..., min_length=1, max_length=50)
+    items: Annotated[list[PredictRequest], Field(min_length=1, max_length=50)]
 
 
 class PredictionResponse(BaseModel):
