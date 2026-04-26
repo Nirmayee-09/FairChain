@@ -23,5 +23,14 @@ def test():
     explainer = auditor.generate_explainer(df)
     pprint.pprint(explainer)
 
+    print("\n=== Task 5a: Generate Corrected Scores (Reweighing) ===")
+    df_corrected = auditor.generate_corrected_scores(df)
+    sample = df_corrected[['supplier_id', 'location_tier', 'ai_trust_score', 'corrected_trust_score']].head(10)
+    print(sample.to_string(index=False))
+
+    print("\n=== Task 5b: Before vs After Comparison ===")
+    comparison = auditor.compare_before_after(df)
+    pprint.pprint(comparison)
+
 if __name__ == "__main__":
     test()
