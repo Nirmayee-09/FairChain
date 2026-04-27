@@ -1,0 +1,96 @@
+{
+  "scenario_name": "Chennai Flood 2023",
+  "start_time_utc": "2023-12-04T00:00:00Z",
+  "events": [
+    {
+      "timestamp_offset_hours": -8,
+      "description": "Initial continuous heavy rainfall detected. ML model begins detecting slight anomalies.",
+      "route_segments": [
+        {
+          "segment_id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+          "nh_identifier": "NH48",
+          "start_node_latlon": [13.0827, 80.2707],
+          "end_node_latlon": [12.9716, 77.5946],
+          "base_distance_km": 345.5,
+          "historical_delay_variance": 1.2
+        }
+      ],
+      "predictive_anomaly_scores": [
+        {
+          "segment_id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+          "current_timestamp_utc": "2023-12-04T00:00:00Z",
+          "isolation_forest_raw_score": 0.65,
+          "normalized_risk_probability": 0.45,
+          "dominant_anomalous_features": [
+            "rainfall_spike"
+          ],
+          "model_confidence_interval": [
+            0.35,
+            0.55
+          ]
+        }
+      ]
+    },
+    {
+      "timestamp_offset_hours": -4,
+      "description": "Model Alert: Substantial risk predicted. Velocity plunge observed.",
+      "route_segments": [
+        {
+          "segment_id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+          "nh_identifier": "NH48",
+          "start_node_latlon": [13.0827, 80.2707],
+          "end_node_latlon": [12.9716, 77.5946],
+          "base_distance_km": 345.5,
+          "historical_delay_variance": 1.5
+        }
+      ],
+      "predictive_anomaly_scores": [
+        {
+          "segment_id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+          "current_timestamp_utc": "2023-12-04T04:00:00Z",
+          "isolation_forest_raw_score": 0.88,
+          "normalized_risk_probability": 0.92,
+          "dominant_anomalous_features": [
+            "rainfall_spike",
+            "velocity_plunge"
+          ],
+          "model_confidence_interval": [
+            0.85,
+            0.98
+          ]
+        }
+      ]
+    },
+    {
+      "timestamp_offset_hours": 0,
+      "description": "Official Closure: NH48 officially closed by authorities due to flooding.",
+      "route_segments": [],
+      "predictive_anomaly_scores": []
+    },
+    {
+      "timestamp_offset_hours": 2,
+      "description": "Biased Selection Event: Rerouting needed. AI suggests expensive enterprise partner over local SME unfairly.",
+      "biased_selection": {
+        "event_trigger": "reroute_request",
+        "enterprise_route": {
+          "supplier_type": "Enterprise Partner",
+          "cost_in_lakhs": 5.0,
+          "ai_recommendation_score": 0.95,
+          "reasoning": "Higher historical data volume leading to biased confidence."
+        },
+        "sme_route": {
+          "supplier_type": "Local SME Transporter",
+          "cost_in_lakhs": 1.5,
+          "ai_recommendation_score": 0.45,
+          "reasoning": "Lower data volume unfairly penalized by model, despite identical physical route availability."
+        }
+      }
+    },
+    {
+      "timestamp_offset_hours": 4,
+      "description": "Post-flood monitoring. Alternative routes stabilizing.",
+      "route_segments": [],
+      "predictive_anomaly_scores": []
+    }
+  ]
+}

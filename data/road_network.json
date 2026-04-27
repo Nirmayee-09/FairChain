@@ -1,0 +1,18 @@
+[
+  {
+    "segment_id": "a1b2c3d4-1234-5678-90ab-cdef12345678",
+    "nh_identifier": "NH48",
+    "start_node_latlon": [13.0827, 80.2707],
+    "end_node_latlon": [12.9716, 77.5946],
+    "base_distance_km": 345.5,
+    "historical_delay_variance": 1.5
+  },
+  {
+    "segment_id": "f5e6d7c8-9012-3456-7890-abcdef123456",
+    "nh_identifier": "NH16",
+    "start_node_latlon": [13.0827, 80.2707],
+    "end_node_latlon": [14.4426, 79.9865],
+    "base_distance_km": 175.0,
+    "historical_delay_variance": 1.1
+  }
+]
